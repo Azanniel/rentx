@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
+import { View } from 'react-native';
+import { ThemeProvider } from 'styled-components';
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
@@ -13,7 +15,7 @@ import {
 } from '@expo-google-fonts/archivo';
 
 import { Home } from './src/screens/Home';
-import { View } from 'react-native';
+import theme from './src/styles/theme';
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -55,7 +57,10 @@ export default function App() {
       style={{ flex: 1 }}
     >
       <StatusBar style='auto' />
-      <Home />
+
+      <ThemeProvider theme={theme}>
+        <Home />
+      </ThemeProvider>
     </View>
   );
 }
