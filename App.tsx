@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { ThemeProvider } from 'styled-components';
-import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
 import { 
@@ -56,7 +55,6 @@ export default function App() {
       onLayout={onLayoutRootView}
       style={{ flex: 1 }}
     >
-      <StatusBar style='auto' />
 
       <ThemeProvider theme={theme}>
         <Home />
