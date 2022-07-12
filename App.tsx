@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ThemeProvider } from 'styled-components';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
@@ -14,7 +14,10 @@ import {
 } from '@expo-google-fonts/archivo';
 
 import { Home } from './src/screens/Home';
+import { CarDetails } from './src/screens/CarDetails';
+
 import theme from './src/styles/theme';
+import { View } from 'react-native';
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -51,14 +54,13 @@ export default function App() {
   }
 
   return (
-    <View
+    <GestureHandlerRootView
       onLayout={onLayoutRootView}
       style={{ flex: 1 }}
     >
-
       <ThemeProvider theme={theme}>
-        <Home />
+        <CarDetails />
       </ThemeProvider>
-    </View>
+    </GestureHandlerRootView>
   );
 }
