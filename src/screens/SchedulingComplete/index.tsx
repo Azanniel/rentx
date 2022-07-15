@@ -6,6 +6,7 @@ import DoneSvg from '../../assets/done.svg';
 
 import {
   Container,
+  LogoWrapper,
   Content,
   Title,
   Message,
@@ -17,9 +18,11 @@ export function SchedulingComplete() {
 
   return (
     <Container>
-      <LogoSvg
-        width={width}
-      />
+      <LogoWrapper>
+        <LogoSvg
+          width={width}
+        />
+      </LogoWrapper>
 
       <Content>
         <DoneSvg
