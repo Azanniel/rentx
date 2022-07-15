@@ -1,4 +1,4 @@
-import { useWindowDimensions } from 'react-native';
+import { StatusBar, useWindowDimensions } from 'react-native';
 import { ConfirmButton } from '../../components/ConfirmButton';
 
 import LogoSvg from '../../assets/logo_background_gray.svg';
@@ -18,6 +18,12 @@ export function SchedulingComplete() {
 
   return (
     <Container>
+      <StatusBar
+        translucent
+        barStyle='light-content'
+        backgroundColor='transparent'
+      />
+
       <LogoWrapper>
         <LogoSvg
           width={width}
