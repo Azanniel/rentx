@@ -14,7 +14,7 @@ import {
 } from '@expo-google-fonts/archivo';
 
 import theme from './src/styles/theme';
-import { Scheduling } from './src/screens/Scheduling';
+import { SchedulingDetails } from './src/screens/SchedulingDetails';
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -56,7 +56,7 @@ export default function App() {
       style={{ flex: 1 }}
     >
       <ThemeProvider theme={theme}>
-        <Scheduling />
+        <SchedulingDetails />
       </ThemeProvider>
     </GestureHandlerRootView>
   );
