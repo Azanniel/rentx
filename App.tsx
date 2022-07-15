@@ -13,11 +13,8 @@ import {
   Archivo_600SemiBold
 } from '@expo-google-fonts/archivo';
 
-import { Home } from './src/screens/Home';
-import { CarDetails } from './src/screens/CarDetails';
-
 import theme from './src/styles/theme';
-import { View } from 'react-native';
+import { Scheduling } from './src/screens/Scheduling';
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -59,7 +56,7 @@ export default function App() {
       style={{ flex: 1 }}
     >
       <ThemeProvider theme={theme}>
-        <CarDetails />
+        <Scheduling />
       </ThemeProvider>
     </GestureHandlerRootView>
   );
