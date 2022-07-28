@@ -1,3 +1,5 @@
+import { useNavigation } from '@react-navigation/native';
+
 import { BackButton } from '../../components/BackButton';
 import { ImageSlider } from '../../components/ImageSlider';
 import { Accessory } from '../../components/Accessory';
@@ -26,10 +28,26 @@ import {
   Accessories,
   Footer
 } from './styles';
+import { StatusBar } from 'react-native';
 
 export function CarDetails() {
+  const navigation = useNavigation();
+
+  function handleConfirmRental() {
+    navigation.navigate('Scheduling');
+  }
+
+  function handleGoBack() {
+    navigation.goBack();
+  }
+
   return (
     <Container>
+      <StatusBar
+        barStyle='dark-content'
+        backgroundColor="transparent"
+        translucent
+      />
 
       <Header>
         <BackButton />
@@ -70,6 +88,7 @@ export function CarDetails() {
       <Footer>
         <Button
           title='Escolher período do aluguel'
+          onPress={handleConfirmRental}
         />
       </Footer>
 

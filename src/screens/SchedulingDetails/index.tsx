@@ -1,6 +1,8 @@
+import { StatusBar } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useTheme } from 'styled-components/native';
 import { Feather } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 import { BackButton } from '../../components/BackButton';
 import { ImageSlider } from '../../components/ImageSlider';
@@ -41,13 +43,29 @@ import {
 } from './styles';
 
 export function SchedulingDetails() {
+  
   const theme = useTheme();
+  const navigation = useNavigation();
+
+  function handleConfirmRental() {
+    navigation.navigate('SchedulingComplete');
+  }
+
+  function handleGoBack() {
+    navigation.goBack();
+  }
 
   return (
     <Container>
 
       <Header>
-        <BackButton />
+        <StatusBar
+          barStyle='dark-content'
+          backgroundColor="transparent"
+          translucent
+        />
+
+        <BackButton onPress={handleGoBack} />
       </Header>
 
       <CarImages>
@@ -115,6 +133,7 @@ export function SchedulingDetails() {
         <Button
           title='Alugar agora'
           color={theme.colors.success}
+          onPress={handleConfirmRental}
         />
       </Footer>
 
