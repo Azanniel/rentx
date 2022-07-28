@@ -1,35 +1,47 @@
+import { useEffect, useState } from 'react';
 import { StatusBar } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useNavigation } from '@react-navigation/native';
 
 import { Car } from '../../components/Car';
+import { Loading } from '../../components/Loading';
 
+import { CarDTO } from '../../dtos/CarDTO';
+import { api } from '../../services/api';
 import Logo from '../../assets/logo.svg';
 
-import { 
-  Container, 
-  Header, 
-  HeaderContent, 
+import {
+  Container,
+  Header,
+  HeaderContent,
   TotalCars,
   CarList
 } from './styles';
 
 export function Home() {
-  const navigation = useNavigation();
+  const [cars, setCars] = useState<CarDTO[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const carData = {
-    brand: 'Audi',
-    name: 'RS 5 Coupé',
-    rent: {
-      period: 'Ao dia',
-      price: 120
-    },
-    thumbnail: 'https://www.pngmart.com/files/10/White-Audi-PNG-Transparent-Image.png'
-  }
+  const navigation = useNavigation();
 
   function handleCarDetails() {
     navigation.navigate('CarDetails');
   }
+
+  useEffect(() => {
+    async function fetchCars() {
+      try {
+        const response = await api.get('/cars');
+        setCars(response.data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchCars();
+  }, [])
 
   return (
     <Container>
@@ -47,16 +59,18 @@ export function Home() {
           />
 
           <TotalCars>
-            Total de 12 carros
+            Total de {cars.length} carros
           </TotalCars>
         </HeaderContent>
       </Header>
 
-      <CarList
-        data={[1,2,3,4,5,6,7]}
-        keyExtractor={item => String(item)}
-        renderItem={({ item }) => <Car data={carData} onPress={handleCarDetails} />}
-      />
+      {isLoading ? <Loading /> :
+        <CarList
+          data={cars}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => <Car data={item} onPress={handleCarDetails} />}
+        />
+      }
     </Container>
   );
 }
