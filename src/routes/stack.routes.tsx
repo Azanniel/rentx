@@ -1,6 +1,7 @@
-import { createStackNavigator } from "@react-navigation/stack";
+import { CardStyleInterpolators, createStackNavigator } from "@react-navigation/stack";
 
 import { Home } from '../screens/Home';
+import { MyCars } from "../screens/MyCars";
 import { CarDetails } from "../screens/CarDetails";
 import { Scheduling } from "../screens/Scheduling";
 import { SchedulingDetails } from "../screens/SchedulingDetails";
@@ -12,13 +13,19 @@ export function StackRoutes() {
   return (
     <Navigator
       screenOptions={{
-        headerShown: false
+        headerShown: false,
+        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
       }}
     >
 
       <Screen
         name="Home"
         component={Home}
+      />
+
+      <Screen
+        name="MyCars"
+        component={MyCars}
       />
 
       <Screen
