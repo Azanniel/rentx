@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { StatusBar } from 'react-native';
+import { Alert, StatusBar } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useTheme } from 'styled-components/native';
 import { Feather } from '@expo/vector-icons';
@@ -14,6 +14,7 @@ import { Button } from '../../components/Button';
 import { CarDTO } from '../../dtos/CarDTO';
 import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
 import { getPlatformDate } from '../../utils/getPlatformDate';
+import { api } from '../../services/api';
 
 import {
   Container,
@@ -62,8 +63,25 @@ export function SchedulingDetails() {
 
   const rentTotal = Number(dates.length * car.rent.price)
 
-  function handleConfirmRental() {
-    navigation.navigate('SchedulingComplete');
+  async function handleConfirmRental() {
+    const schedulesByCar = await api.get(`/schedules_bycars/${car.id}`);
+    
+    const unavailableDates = [
+      ...schedulesByCar.data.unavailable_dates,
+      ...dates
+    ];
+
+    api.put(`/schedules_bycars/${car.id}`, {
+      id: car.id,
+      unavailable_dates: unavailableDates
+    })
+    .then(response => {
+      navigation.navigate('SchedulingComplete');
+    })
+    .catch(error => {
+      console.log(error);
+      Alert.alert('Agendamento', 'Não foi possível agendar na data selecionada');
+    });
   }
 
   function handleGoBack() {
