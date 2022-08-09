@@ -1,8 +1,11 @@
+import { PropsWithChildren } from 'react';
 import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { RectButton } from 'react-native-gesture-handler';
+import { RectButton, RectButtonProps } from 'react-native-gesture-handler';
 
-export const Container = styled(RectButton)`
+interface ButtonProps extends PropsWithChildren<RectButtonProps> {}
+
+export const Container = styled(RectButton)<ButtonProps>`
   width: 100%;
   height: 126px;
 
