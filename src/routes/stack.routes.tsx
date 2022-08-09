@@ -1,22 +1,29 @@
 import { CardStyleInterpolators, createStackNavigator } from "@react-navigation/stack";
 
+import { Splash } from '../screens/Splash';
 import { Home } from '../screens/Home';
-import { MyCars } from "../screens/MyCars";
-import { CarDetails } from "../screens/CarDetails";
-import { Scheduling } from "../screens/Scheduling";
-import { SchedulingDetails } from "../screens/SchedulingDetails";
-import { SchedulingComplete } from "../screens/SchedulingComplete";
+import { MyCars } from '../screens/MyCars';
+import { CarDetails } from '../screens/CarDetails';
+import { Scheduling } from '../screens/Scheduling';
+import { SchedulingDetails } from '../screens/SchedulingDetails';
+import { SchedulingComplete } from '../screens/SchedulingComplete';
 
 const { Navigator, Screen } = createStackNavigator();
 
 export function StackRoutes() {
   return (
     <Navigator
+      initialRouteName="Splash"
       screenOptions={{
         headerShown: false,
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
       }}
     >
+
+      <Screen
+        name="Splash"
+        component={Splash}
+      />
 
       <Screen
         name="Home"
