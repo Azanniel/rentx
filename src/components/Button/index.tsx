@@ -1,4 +1,5 @@
 import { PropsWithChildren } from 'react';
+import { ActivityIndicator } from 'react-native';
 import { useTheme } from 'styled-components/native';
 import { RectButtonProps } from 'react-native-gesture-handler';
 
@@ -10,17 +11,24 @@ import {
 interface Props extends PropsWithChildren<RectButtonProps> {
   title: string;
   color?: string;
+  loading?: boolean;
 }
 
-export function Button({title, color, ...rest}: Props) {
+export function Button({title, color, enabled = true, loading = false,...rest}: Props) {
   const theme = useTheme();
 
   return (
     <Container
-      {...rest}
       color={color ? color : theme.colors.main}
+      enabled={enabled}
+      style={{ opacity: (enabled === false || loading === true) ? .5 : 1 }}
+      {...rest}
     >
-      <Title>{title}</Title>
+      {
+        loading
+        ? <ActivityIndicator color={theme.colors.shape} />
+        : <Title>{title}</Title>
+      }
     </Container>
   );
 }
