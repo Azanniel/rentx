@@ -4,7 +4,7 @@ import { useTheme } from 'styled-components/native';
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
-import { Loading } from '../../components/Loading';
+import { LoadAnimation } from '../../components/LoadAnimation';
 import { Car } from '../../components/Car';
 import { BackButton } from '../../components/BackButton';
 import { CarDTO } from '../../dtos/CarDTO';
@@ -84,7 +84,7 @@ export function MyCars() {
         </SubTitle>
       </Header>
 
-      {isLoading ? <Loading /> :
+      {isLoading ? <LoadAnimation /> :
         <Content>
           <Appointments>
             <AppointmentsTitle>Agendamentos feitos</AppointmentsTitle>

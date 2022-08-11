@@ -13,7 +13,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { Car } from '../../components/Car';
-import { Loading } from '../../components/Loading';
+import { LoadAnimation } from '../../components/LoadAnimation';
 
 import Logo from '../../assets/logo.svg';
 import { CarDTO } from '../../dtos/CarDTO';
@@ -112,7 +112,7 @@ export function Home() {
         </HeaderContent>
       </Header>
 
-      {isLoading ? <Loading /> :
+      {isLoading ? <LoadAnimation /> :
         <CarList
           data={cars}
           keyExtractor={item => item.id}
