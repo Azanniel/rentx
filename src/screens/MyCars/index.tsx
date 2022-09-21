@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
-import { FlatList, StatusBar } from 'react-native';
-import { useTheme } from 'styled-components/native';
-import { AntDesign } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useEffect, useState } from "react"
+import { FlatList, StatusBar } from "react-native"
+import { useTheme } from "styled-components/native"
+import { AntDesign } from "@expo/vector-icons"
+import { useNavigation } from "@react-navigation/native"
 
-import { LoadAnimation } from '../../components/LoadAnimation';
-import { Car } from '../../components/Car';
-import { BackButton } from '../../components/BackButton';
-import { CarDTO } from '../../dtos/CarDTO';
-import { api } from '../../services/api';
+import { LoadAnimation } from "../../components/LoadAnimation"
+import { Car } from "../../components/Car"
+import { BackButton } from "../../components/BackButton"
+import { CarDTO } from "../../dtos/CarDTO"
+import { api } from "../../services/api"
 
 import {
   Container,
@@ -23,41 +23,41 @@ import {
   CarFooter,
   CarFooterTitle,
   CarFooterPeriod,
-  CarFooterDate
-} from './styles';
+  CarFooterDate,
+} from "./styles"
 
 interface CarProps {
-  id: string;
-  user_id: string;
-  car: CarDTO;
-  startDate: string;
-  endDate: string;
+  id: string
+  user_id: string
+  car: CarDTO
+  startDate: string
+  endDate: string
 }
 
 export function MyCars() {
-  const [cars, setCars] = useState<CarProps[]>();
-  const [isLoading, setIsLoading] = useState(true);
+  const [cars, setCars] = useState<CarProps[]>()
+  const [isLoading, setIsLoading] = useState(true)
 
-  const theme = useTheme();
-  const navigation = useNavigation();
+  const theme = useTheme()
+  const navigation = useNavigation()
 
   function handleGoBack() {
-    navigation.goBack();
+    navigation.goBack()
   }
 
   useEffect(() => {
     async function fetchCars() {
       try {
-        const response = await api.get('/schedules_byuser?user_id=1');
-        setCars(response.data);
+        const response = await api.get("/schedules_byuser?user_id=1")
+        setCars(response.data)
       } catch (error) {
-        console.log(error);
+        console.log(error)
       } finally {
-        setIsLoading(false);
+        setIsLoading(false)
       }
     }
 
-    fetchCars();
+    fetchCars()
   }, [])
 
   return (
@@ -65,26 +65,23 @@ export function MyCars() {
       <Header>
         <StatusBar
           translucent
-          barStyle='light-content'
-          backgroundColor='transparent'
+          barStyle="light-content"
+          backgroundColor="transparent"
         />
 
-        <BackButton
-          color={theme.colors.shape}
-          onPress={handleGoBack}
-        />
+        <BackButton color={theme.colors.shape} onPress={handleGoBack} />
 
         <Title>
-          Seus agendamentos,{'\n'}
+          Seus agendamentos,{"\n"}
           estão aqui.
         </Title>
 
-        <SubTitle>
-          Conforto, segurança e praticidade.
-        </SubTitle>
+        <SubTitle>Conforto, segurança e praticidade.</SubTitle>
       </Header>
 
-      {isLoading ? <LoadAnimation /> :
+      {isLoading ? (
+        <LoadAnimation />
+      ) : (
         <Content>
           <Appointments>
             <AppointmentsTitle>Agendamentos feitos</AppointmentsTitle>
@@ -93,7 +90,7 @@ export function MyCars() {
 
           <FlatList
             data={cars}
-            keyExtractor={item => item.id}
+            keyExtractor={(item) => item.id}
             showsVerticalScrollIndicator={false}
             renderItem={({ item }) => (
               <CarWrapper>
@@ -105,7 +102,7 @@ export function MyCars() {
                     <CarFooterDate>{item.startDate}</CarFooterDate>
 
                     <AntDesign
-                      name='arrowright'
+                      name="arrowright"
                       size={20}
                       color={theme.colors.title}
                       style={{ marginHorizontal: 10 }}
@@ -118,7 +115,7 @@ export function MyCars() {
             )}
           />
         </Content>
-      }
+      )}
     </Container>
-  );
+  )
 }

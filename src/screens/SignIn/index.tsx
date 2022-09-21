@@ -1,46 +1,39 @@
-import { StatusBar } from 'react-native';
-import { useTheme } from 'styled-components/native';
+import { StatusBar } from "react-native"
+import { useTheme } from "styled-components/native"
 
-import { Button } from '../../components/Button';
+import { Button } from "../../components/Button"
 
-import { 
-  Container, 
-  Header, 
-  SubTitle, 
-  Title,
-  Footer 
-} from './styles';
+import { Container, Header, SubTitle, Title, Footer } from "./styles"
 
 export function SignIn() {
-
-  const { colors } = useTheme();
+  const { colors } = useTheme()
 
   return (
     <Container>
       <StatusBar
-        barStyle='dark-content'
+        barStyle="dark-content"
         backgroundColor="transparent"
         translucent
       />
 
       <Header>
-        <Title>Estamos{'\n'}quase lá</Title>
+        <Title>Estamos{"\n"}quase lá</Title>
         <SubTitle>
-          Faça seu login para começar{'\n'}
+          Faça seu login para começar{"\n"}
           uma experiência incrível.
         </SubTitle>
       </Header>
 
       <Footer>
         <Button
-          title='Login'
+          title="Login"
           onPress={() => {}}
           enabled={true}
           loading={false}
         />
 
         <Button
-          title='Criar conta gratuita'
+          title="Criar conta gratuita"
           onPress={() => {}}
           light
           color={colors.background_secondary}
@@ -49,5 +42,5 @@ export function SignIn() {
         />
       </Footer>
     </Container>
-  );
+  )
 }

@@ -1,18 +1,23 @@
-import { useState } from 'react';
-import { format } from 'date-fns';
-import { StatusBar } from 'react-native';
-import { useTheme } from 'styled-components/native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useState } from "react"
+import { format } from "date-fns"
+import { StatusBar } from "react-native"
+import { useTheme } from "styled-components/native"
+import { useNavigation, useRoute } from "@react-navigation/native"
 
-import { Button } from '../../components/Button';
-import { BackButton } from '../../components/BackButton';
-import { getPlatformDate } from '../../utils/getPlatformDate';
-import { Calendar, DayProps, MarkedDateProps, generateInterval } from '../../components/Calendar';
+import { Button } from "../../components/Button"
+import { BackButton } from "../../components/BackButton"
+import { getPlatformDate } from "../../utils/getPlatformDate"
+import {
+  Calendar,
+  DayProps,
+  MarkedDateProps,
+  generateInterval,
+} from "../../components/Calendar"
 
-import ArrowSvg from '../../assets/arrow.svg';
-import { CarDTO } from '../../dtos/CarDTO';
+import ArrowSvg from "../../assets/arrow.svg"
+import { CarDTO } from "../../dtos/CarDTO"
 
-import { 
+import {
   Container,
   Header,
   Title,
@@ -21,12 +26,12 @@ import {
   DateTitle,
   DateValue,
   Content,
-  Footer
-} from './styles';
+  Footer,
+} from "./styles"
 
 interface RentalPeriod {
-  startFormatted: string;
-  endFormatted: string;
+  startFormatted: string
+  endFormatted: string
 }
 
 interface Params {
@@ -34,66 +39,72 @@ interface Params {
 }
 
 export function Scheduling() {
-  const [lastSelectedDate, setLastSelectedDate] = useState<DayProps>({} as DayProps);
-  const [markedDates, setMarkedDates] = useState<MarkedDateProps>({} as MarkedDateProps);
-  const [rentalPeriod, setRentalPeriod] = useState<RentalPeriod>({} as RentalPeriod);
-  
-  const theme = useTheme();
-  const navigation = useNavigation();
-  const route = useRoute();
+  const [lastSelectedDate, setLastSelectedDate] = useState<DayProps>(
+    {} as DayProps
+  )
+  const [markedDates, setMarkedDates] = useState<MarkedDateProps>(
+    {} as MarkedDateProps
+  )
+  const [rentalPeriod, setRentalPeriod] = useState<RentalPeriod>(
+    {} as RentalPeriod
+  )
 
-  const { car } = route.params as Params;
+  const theme = useTheme()
+  const navigation = useNavigation()
+  const route = useRoute()
+
+  const { car } = route.params as Params
 
   function handleConfirmRental() {
-    navigation.navigate('SchedulingDetails', {
+    navigation.navigate("SchedulingDetails", {
       car,
-      dates: Object.keys(markedDates)
-    });
+      dates: Object.keys(markedDates),
+    })
   }
 
   function handleGoBack() {
-    navigation.goBack();
+    navigation.goBack()
   }
 
   function handleChangeDate(date: DayProps) {
-    let start = !lastSelectedDate.timestamp ? date : lastSelectedDate;
-    let end = date;
+    let start = !lastSelectedDate.timestamp ? date : lastSelectedDate
+    let end = date
 
-    if(start.timestamp > end.timestamp) {
-      start = end;
+    if (start.timestamp > end.timestamp) {
+      start = end
       end = start
     }
 
-    const interval = generateInterval(start, end);
-    setLastSelectedDate(end);
-    setMarkedDates(interval);
+    const interval = generateInterval(start, end)
+    setLastSelectedDate(end)
+    setMarkedDates(interval)
 
-    const firstDate = Object.keys(interval)[0];
-    const endDate = Object.keys(interval)[Object.keys(interval).length - 1];
+    const firstDate = Object.keys(interval)[0]
+    const endDate = Object.keys(interval)[Object.keys(interval).length - 1]
 
     setRentalPeriod({
-      startFormatted: format(getPlatformDate(new Date(firstDate)), 'dd/MM/yyyy'),
-      endFormatted: format(getPlatformDate(new Date(endDate)), 'dd/MM/yyyy')
-    });
+      startFormatted: format(
+        getPlatformDate(new Date(firstDate)),
+        "dd/MM/yyyy"
+      ),
+      endFormatted: format(getPlatformDate(new Date(endDate)), "dd/MM/yyyy"),
+    })
   }
 
   return (
     <Container>
       <Header>
-        <StatusBar 
+        <StatusBar
           translucent
-          barStyle='light-content'
-          backgroundColor='transparent'
+          barStyle="light-content"
+          backgroundColor="transparent"
         />
 
-        <BackButton
-          color={theme.colors.shape}
-          onPress={handleGoBack}
-        />
+        <BackButton color={theme.colors.shape} onPress={handleGoBack} />
 
         <Title>
-          Escolha uma {'\n'}
-          data de início e {'\n'}
+          Escolha uma {"\n"}
+          data de início e {"\n"}
           fim do aluguel
         </Title>
 
@@ -117,19 +128,16 @@ export function Scheduling() {
       </Header>
 
       <Content>
-        <Calendar
-          markedDates={markedDates}
-          onDayPress={handleChangeDate}
-        />
+        <Calendar markedDates={markedDates} onDayPress={handleChangeDate} />
       </Content>
 
       <Footer>
-        <Button 
-          title='Confirmar'
+        <Button
+          title="Confirmar"
           enabled={!!rentalPeriod.endFormatted}
           onPress={handleConfirmRental}
         />
       </Footer>
     </Container>
-  );
+  )
 }

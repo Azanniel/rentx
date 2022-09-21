@@ -1,20 +1,20 @@
-import { useEffect, useState } from 'react';
-import { Alert, StatusBar } from 'react-native';
-import { RFValue } from 'react-native-responsive-fontsize';
-import { useTheme } from 'styled-components/native';
-import { Feather } from '@expo/vector-icons';
-import { format } from 'date-fns';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useEffect, useState } from "react"
+import { Alert, StatusBar } from "react-native"
+import { RFValue } from "react-native-responsive-fontsize"
+import { useTheme } from "styled-components/native"
+import { Feather } from "@expo/vector-icons"
+import { format } from "date-fns"
+import { useNavigation, useRoute } from "@react-navigation/native"
 
-import { BackButton } from '../../components/BackButton';
-import { ImageSlider } from '../../components/ImageSlider';
-import { Accessory } from '../../components/Accessory';
-import { Button } from '../../components/Button';
+import { BackButton } from "../../components/BackButton"
+import { ImageSlider } from "../../components/ImageSlider"
+import { Accessory } from "../../components/Accessory"
+import { Button } from "../../components/Button"
 
-import { CarDTO } from '../../dtos/CarDTO';
-import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
-import { getPlatformDate } from '../../utils/getPlatformDate';
-import { api } from '../../services/api';
+import { CarDTO } from "../../dtos/CarDTO"
+import { getAccessoryIcon } from "../../utils/getAccessoryIcon"
+import { getPlatformDate } from "../../utils/getPlatformDate"
+import { api } from "../../services/api"
 
 import {
   Container,
@@ -39,77 +39,88 @@ import {
   RentalPriceDetails,
   RentalPriceQuota,
   RentalPriceTotal,
-  Footer
-} from './styles';
+  Footer,
+} from "./styles"
 
 interface Params {
-  car: CarDTO,
+  car: CarDTO
   dates: string[]
 }
 
 interface RentalPeriod {
-  start: string;
-  end: string;
+  start: string
+  end: string
 }
 
 export function SchedulingDetails() {
-  const [loading, setLoading] = useState(false);
-  const [rentalPeriod, setRentalPeriod] = useState<RentalPeriod>({} as RentalPeriod);
+  const [loading, setLoading] = useState(false)
+  const [rentalPeriod, setRentalPeriod] = useState<RentalPeriod>(
+    {} as RentalPeriod
+  )
 
-  const theme = useTheme();
-  const navigation = useNavigation();
-  const route = useRoute();
+  const theme = useTheme()
+  const navigation = useNavigation()
+  const route = useRoute()
 
-  const { car, dates } = route.params as Params;
+  const { car, dates } = route.params as Params
 
   const rentTotal = Number(dates.length * car.rent.price)
 
   async function handleConfirmRental() {
-    setLoading(true);
+    setLoading(true)
 
-    const schedulesByCar = await api.get(`/schedules_bycars/${car.id}`);
-    
+    const schedulesByCar = await api.get(`/schedules_bycars/${car.id}`)
+
     const unavailableDates = [
       ...schedulesByCar.data.unavailable_dates,
-      ...dates
-    ];
+      ...dates,
+    ]
 
-    await api.post('/schedules_byuser', {
+    await api.post("/schedules_byuser", {
       user_id: 1,
       car,
-      startDate: format(getPlatformDate(new Date(dates[0])), 'dd/MM/yyyy'),
-      endDate: format(getPlatformDate(new Date(dates[dates.length - 1])), 'dd/MM/yyyy')
-    });
-
-    api.put(`/schedules_bycars/${car.id}`, {
-      id: car.id,
-      unavailable_dates: unavailableDates
+      startDate: format(getPlatformDate(new Date(dates[0])), "dd/MM/yyyy"),
+      endDate: format(
+        getPlatformDate(new Date(dates[dates.length - 1])),
+        "dd/MM/yyyy"
+      ),
     })
-    .then(() => navigation.navigate('SchedulingComplete'))
-    .catch(error => {
-      console.log(error);
-      setLoading(false);
-      Alert.alert('Agendamento', 'Não foi possível agendar na data selecionada');
-    });
+
+    api
+      .put(`/schedules_bycars/${car.id}`, {
+        id: car.id,
+        unavailable_dates: unavailableDates,
+      })
+      .then(() => navigation.navigate("SchedulingComplete"))
+      .catch((error) => {
+        console.log(error)
+        setLoading(false)
+        Alert.alert(
+          "Agendamento",
+          "Não foi possível agendar na data selecionada"
+        )
+      })
   }
 
   function handleGoBack() {
-    navigation.goBack();
+    navigation.goBack()
   }
 
   useEffect(() => {
     setRentalPeriod({
-      start: format(getPlatformDate(new Date(dates[0])), 'dd/MM/yyyy'),
-      end: format(getPlatformDate(new Date(dates[dates.length - 1])), 'dd/MM/yyyy')
+      start: format(getPlatformDate(new Date(dates[0])), "dd/MM/yyyy"),
+      end: format(
+        getPlatformDate(new Date(dates[dates.length - 1])),
+        "dd/MM/yyyy"
+      ),
     })
   }, [])
 
   return (
     <Container>
-
       <Header>
         <StatusBar
-          barStyle='dark-content'
+          barStyle="dark-content"
           backgroundColor="transparent"
           translucent
         />
@@ -135,21 +146,19 @@ export function SchedulingDetails() {
         </Details>
 
         <Accessories>
-          {
-            car.accessories.map(accessory => (
-              <Accessory
-                key={accessory.type}
-                name={accessory.name}
-                icon={getAccessoryIcon(accessory.type)}
-              />
-            ))
-          }
+          {car.accessories.map((accessory) => (
+            <Accessory
+              key={accessory.type}
+              name={accessory.name}
+              icon={getAccessoryIcon(accessory.type)}
+            />
+          ))}
         </Accessories>
 
         <RentalPeriod>
           <CalendarIcon>
             <Feather
-              name='calendar'
+              name="calendar"
               size={RFValue(24)}
               color={theme.colors.background_secondary}
             />
@@ -161,7 +170,7 @@ export function SchedulingDetails() {
           </DateInfo>
 
           <Feather
-            name='chevron-right'
+            name="chevron-right"
             size={RFValue(10)}
             color={theme.colors.text}
           />
@@ -183,14 +192,13 @@ export function SchedulingDetails() {
 
       <Footer>
         <Button
-          title='Alugar agora'
+          title="Alugar agora"
           color={theme.colors.success}
           enabled={!loading}
           loading={loading}
           onPress={handleConfirmRental}
         />
       </Footer>
-
     </Container>
-  );
+  )
 }
