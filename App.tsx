@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
 import { LogBox } from "react-native"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
-import { ThemeProvider } from "styled-components"
+import { ThemeProvider } from "styled-components/native"
 import * as SplashScreen from "expo-splash-screen"
 import * as Font from "expo-font"
 import { Inter_400Regular, Inter_500Medium } from "@expo-google-fonts/inter"
