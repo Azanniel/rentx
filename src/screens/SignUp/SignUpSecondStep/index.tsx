@@ -14,6 +14,8 @@ import { Bullet } from "../../../components/Bullet"
 import { Button } from "../../../components/Button"
 import { PasswordInput } from "../../../components/PasswordInput"
 
+import { api } from "../../../services/api"
+
 import {
   Container,
   Header,
@@ -59,11 +61,23 @@ export function SignUpSecondStep() {
 
       console.log(user, password, passwordConfirm)
 
-      navigation.navigate("Confirmation", {
-        title: "Conta criada!",
-        message: `Agora é só fazer login\ne aproveitar`,
-        nextScreen: "SignIn",
-      })
+      await api
+        .post("/users", {
+          name: user.name,
+          email: user.email,
+          driver_license: user.driverLicense,
+          password,
+        })
+        .then(() => {
+          navigation.navigate("Confirmation", {
+            title: "Conta criada!",
+            message: `Agora é só fazer login\ne aproveitar`,
+            nextScreen: "SignIn",
+          })
+        })
+        .catch(() => {
+          return Alert.alert("Opa", "Não foi possível criar sua conta")
+        })
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         return Alert.alert("Ops!", error.message)
