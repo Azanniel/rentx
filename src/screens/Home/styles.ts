@@ -1,12 +1,8 @@
-import { PropsWithChildren } from "react"
 import { FlatList, FlatListProps } from "react-native"
-import { RectButton, RectButtonProps } from "react-native-gesture-handler"
 import { RFValue } from "react-native-responsive-fontsize"
 import styled from "styled-components/native"
 
 import { CarDTO } from "../../dtos/CarDTO"
-
-interface MyCarsButtonProps extends PropsWithChildren<RectButtonProps> {}
 
 export const Container = styled.View`
   flex: 1;
@@ -43,15 +39,3 @@ export const CarList = styled(
   },
   showsVerticalScrollIndicator: false,
 })``
-
-export const MyCarsButton = styled(RectButton)<MyCarsButtonProps>`
-  width: 60px;
-  height: 60px;
-
-  border-radius: 30px;
-
-  justify-content: center;
-  align-items: center;
-
-  background-color: ${({ theme }) => theme.colors.main};
-`
