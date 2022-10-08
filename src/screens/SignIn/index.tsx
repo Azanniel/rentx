@@ -14,6 +14,8 @@ import { Button } from "../../components/Button"
 import { Input } from "../../components/Input"
 import { PasswordInput } from "../../components/PasswordInput"
 
+import { useAuth } from "../../hooks/auth"
+
 import { Container, Header, SubTitle, Title, Form, Footer } from "./styles"
 
 export function SignIn() {
@@ -21,6 +23,7 @@ export function SignIn() {
   const [password, setPassword] = useState("")
 
   const { colors } = useTheme()
+  const { signIn } = useAuth()
   const navigation = useNavigation()
 
   async function handleSignIn() {
@@ -33,6 +36,8 @@ export function SignIn() {
       })
 
       await schema.validate({ email, password })
+
+      await signIn({ email, password })
 
       Alert.alert("Tudo certo")
     } catch (error) {
