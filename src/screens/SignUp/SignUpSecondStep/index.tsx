@@ -59,8 +59,6 @@ export function SignUpSecondStep() {
 
       await schema.validate({ password, passwordConfirm })
 
-      console.log(user, password, passwordConfirm)
-
       await api
         .post("/users", {
           name: user.name,
@@ -75,7 +73,8 @@ export function SignUpSecondStep() {
             nextScreen: "SignIn",
           })
         })
-        .catch(() => {
+        .catch((error) => {
+          console.log(error)
           return Alert.alert("Opa", "Não foi possível criar sua conta")
         })
     } catch (error) {

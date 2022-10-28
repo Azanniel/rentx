@@ -44,6 +44,7 @@ export function SignIn() {
       if (error instanceof Yup.ValidationError) {
         Alert.alert("Ops!", error.message)
       } else {
+        console.log(error)
         Alert.alert(
           "Algo deu errado!",
           "Ocorreu um erro ao fazer login, verifique as credenciais"

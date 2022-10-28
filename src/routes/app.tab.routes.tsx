@@ -5,6 +5,7 @@ import { useTheme } from "styled-components/native"
 
 import { AppStackRoutes } from "./app.stack.routes"
 import { MyCars } from "../screens/MyCars"
+import { Profile } from "../screens/Profile"
 
 import HomeSvg from "../assets/home.svg"
 import CarSvg from "../assets/car.svg"
@@ -39,7 +40,7 @@ export function AppTabRoutes() {
       />
 
       <Screen
-        name="Profile"
+        name="MyCars"
         component={MyCars}
         options={{
           tabBarIcon: ({ color }) =>
@@ -48,8 +49,8 @@ export function AppTabRoutes() {
       />
 
       <Screen
-        name="MyCars"
-        component={MyCars}
+        name="Profile"
+        component={Profile}
         options={{
           tabBarIcon: ({ color }) =>
             (<PeopleSvg width={24} height={24} color={color} />) as ReactNode,
