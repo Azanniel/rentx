@@ -28,6 +28,8 @@ interface SignInCredentials {
 interface AuthContextData {
   user: User
   signIn: (credentials: SignInCredentials) => Promise<void>
+  updatedUser: (user: User) => Promise<void>
+  signOut: () => Promise<void>
 }
 
 interface AuthProviderProps {
@@ -50,9 +52,9 @@ function AuthProvider({ children }: AuthProviderProps) {
 
       api.defaults.headers.common.Authorization = `Bearer ${token}`
 
-      const userCollection = database.get<ModelUser>("users")
-      database.write(async () => {
-        await userCollection.create((newUser) => {
+      await database.write(async () => {
+        const userCollection = database.get<ModelUser>("users")
+        const dataUser = await userCollection.create((newUser) => {
           newUser.user_id = user.id
           newUser.name = user.name
           newUser.email = user.email
@@ -60,9 +62,45 @@ function AuthProvider({ children }: AuthProviderProps) {
           newUser.avatar = user.avatar
           newUser.token = token
         })
+
+        const userData = dataUser._raw as unknown as User
+        setData(userData)
+      })
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+
+  async function signOut() {
+    try {
+      await database.write(async () => {
+        const userSelected = await database
+          .get<ModelUser>("users")
+          .find(data.id)
+        await userSelected.destroyPermanently()
       })
 
-      setData({ ...user, token })
+      setData({} as User)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async function updatedUser(user: User) {
+    try {
+      await database.write(async () => {
+        const userSelected = await database
+          .get<ModelUser>("users")
+          .find(user.id)
+
+        await userSelected.update((userData) => {
+          userData.name = user.name
+          userData.avatar = user.avatar
+          userData.driver_license = user.driver_license
+        })
+
+        setData(user)
+      })
     } catch (error) {
       throw new Error(error)
     }
@@ -88,6 +126,8 @@ function AuthProvider({ children }: AuthProviderProps) {
       value={{
         user: data,
         signIn,
+        updatedUser,
+        signOut,
       }}
     >
       {children}
